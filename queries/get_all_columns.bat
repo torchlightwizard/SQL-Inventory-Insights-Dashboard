@@ -1,0 +1,3 @@
+sqlcmd -S *server* -d adventureworks2022 -U *user* -P *pass* -Q "select table_name, column_name from information_schema.columns where table_schema = 'Production' order by table_name, ordinal_position;" -s "," -W -o production.txt
+sqlcmd -S *server* -d adventureworks2022 -U *user* -P *pass* -Q "select table_name, column_name from information_schema.columns where table_schema = 'Sales' order by table_name, ordinal_position;" -s "," -W -o sales.txt
+sqlcmd -S *server* -d adventureworks2022 -U *user* -P *pass* -Q "select table_name, column_name from information_schema.columns where table_schema = 'Purchasing' order by table_name, ordinal_position;" -s "," -W -o purchasing.txt
