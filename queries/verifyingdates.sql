@@ -1,0 +1,1 @@
+select COUNT(*) as total, SUM(case when h.orderdate < h.shipdate then 1 else 0 end) as 'order<ship date', SUM(case when h.shipdate < d.duedate then 1 else 0 end) as 'ship<due date' from purchasing.PurchaseOrderHeader as h inner join purchasing.PurchaseOrderDetail as d on d.PurchaseOrderID = h.PurchaseOrderID;
