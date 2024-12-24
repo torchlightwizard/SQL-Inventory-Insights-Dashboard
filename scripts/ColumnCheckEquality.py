@@ -1,4 +1,3 @@
-
 def get_items (name):
     path = "../data/"
     items = None
