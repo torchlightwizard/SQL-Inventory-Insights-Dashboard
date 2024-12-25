@@ -1,49 +1,42 @@
 create view turnover_rate as
 with s as (
-    select d.productid as id, h.shipdate as date, d.linetotal as price
-    from sales.salesorderheader as h
-    inner join sales.salesorderdetail as d
-    on h.salesorderid = d.salesorderid
+    select 
+        d.productid as id, 
+        (d.orderqty * (case when b.perassemblyqty is null then 1 else b.perassemblyqty end)) as qty 
+    from sales.salesorderdetail as d
+    left join production.billofmaterials as b
+        on d.productid = b.productassemblyid
 ),
-p as (
-    select d.productid as id, h.shipdate as date, (d.linetotal) as price
-    from purchasing.purchaseorderheader as h
-    inner join purchasing.purchaseorderdetail as d
-    on h.purchaseorderid = d.purchaseorderid
+i as (
+    select 
+        i.productid as id, 
+        i.quantity as qty
+    from production.productinventory as i
 )
 select 
-    sum(s.price) as total_sales,
-    sum(p.price) as total_cost,
-    (sum(s.price) / sum(p.price)) * 100 as turnover
+    sum(s.qty) / sum(i.qty) as turnover_rate
 from s
-full outer join p
-on s.date = p.date;
+full outer join i
+    on s.id = i.id;
 
 create view turnover as 
 with s as (
-    select d.productid as id, h.shipdate as date, d.linetotal as price
-    from sales.salesorderheader as h
-    inner join sales.salesorderdetail as d
-    on h.salesorderid = d.salesorderid
+    select 
+        d.productid as id, 
+        (d.orderqty * (case when b.perassemblyqty is null then 1 else b.perassemblyqty end)) as qty 
+    from sales.salesorderdetail as d
+    left join production.billofmaterials as b
+        on d.productid = b.productassemblyid
 ),
-p as (
-    select d.productid as id, h.shipdate as date, (d.linetotal) as price
-    from purchasing.purchaseorderheader as h
-    inner join purchasing.purchaseorderdetail as d
-    on h.purchaseorderid = d.purchaseorderid
+i as (
+    select 
+        i.productid as id, 
+        i.quantity as qty
+    from production.productinventory as i
 )
 select 
-    s.date as date, 
-    s.id as sales_id, 
-    p.id as purchase_id, 
-    s.price as sales_price, 
-    p.price as purchase_price,
-    ps.name as sales_name,
-    pp.name as purchase_name
+    s.id, s.qty, i.qty
 from s
-full outer join p
-on s.date = p.date
-inner join production.product as ps
-on s.id = ps.productid
-inner join production.product as pp
-on p.id = pp.productid;
+full outer join i
+    on s.id = i.id;
+    
