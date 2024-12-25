@@ -7,6 +7,8 @@ with t as (
 select avg(elapsed_time) 
 from t;
 
+
+
 create view average_purchase_time as
 with t as ( 
     select purchaseorderid, 

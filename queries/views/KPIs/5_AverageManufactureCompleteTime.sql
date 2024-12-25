@@ -8,6 +8,8 @@ with t as (
 select avg(elapsed_time) 
 from t;
 
+
+
 create view average_man_end_time as
 with t as ( 
     select workorderid, 
