@@ -19,6 +19,8 @@ from s
 full outer join i
     on s.id = i.id;
 
+
+
 create view turnover as 
 with s as (
     select 
