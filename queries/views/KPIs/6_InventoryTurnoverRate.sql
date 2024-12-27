@@ -2,6 +2,7 @@ create view turnover_rate as
 with s as (
     select 
         d.productid as id, 
+        -- Here we ignore the fact if b.perassembly has duplicate values, because we cant find the real true value
         (d.orderqty * (case when b.perassemblyqty is null then 1 else b.perassemblyqty end)) as qty 
     from sales.salesorderdetail as d
     left join production.billofmaterials as b
@@ -25,6 +26,7 @@ create view turnover as
 with s as (
     select 
         d.productid as id, 
+        -- Here we ignore the fact if b.perassembly has duplicate values, because we cant find the real true value
         (d.orderqty * (case when b.perassemblyqty is null then 1 else b.perassemblyqty end)) as qty 
     from sales.salesorderdetail as d
     left join production.billofmaterials as b
@@ -37,7 +39,7 @@ i as (
     from production.productinventory as i
 )
 select 
-    s.id, s.qty, i.qty
+    s.id as id, s.qty as sale_qty, i.qty as inventory_qty
 from s
 full outer join i
     on s.id = i.id;

@@ -1,6 +1,6 @@
 create view rejected_ratio as 
 select 
-    (sum(rejectedqty) / sum(stockedqty)) * 100
+    (sum(rejectedqty) / sum(stockedqty)) as rejection ratio
 from purchasing.purchaseorderdetail;
 
 
