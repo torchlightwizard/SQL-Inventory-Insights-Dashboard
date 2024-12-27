@@ -35,6 +35,7 @@ union all
 
 
 
+create view production.inventory_change as 
 with i as (
     select 
         id, 
