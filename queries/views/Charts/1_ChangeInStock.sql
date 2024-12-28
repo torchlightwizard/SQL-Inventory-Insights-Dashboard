@@ -42,7 +42,7 @@ with i as (
         sum(qty) as qty, 
         date 
     from production.inbound 
-    group by id, date
+        group by id, date
 ),
 o as (
     select 
@@ -50,12 +50,16 @@ o as (
         sum(qty) as qty, 
         date 
     from production.outbound 
-    group by id, date
+        group by id, date
 )
 select 
-    (case when o.id is null then i.id else o.id end) as id,
+    (case when o.id is null then pi.name else po.name end) as product,
     (case when o.qty is null then 0 else o.qty end) - (case when i.qty is null then 0 else i.qty end) as qty_changed,
     (case when o.date is null then i.date else o.date end) as date
 from o
 full outer join i
-    on (o.id = i.id and o.date = i.date);
+    on (o.id = i.id and o.date = i.date)
+left join production.product as pi
+    on i.id = pi.productid
+left join production.product as po
+    on o.id = po.productid;
