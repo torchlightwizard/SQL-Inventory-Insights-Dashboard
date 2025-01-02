@@ -7,9 +7,11 @@ from purchasing.purchaseorderdetail;
 
 create view rejected as 
 select 
-    productid, 
-    orderqty, 
-    stockedqty, 
-    rejectedqty 
-from purchasing.purchaseorderdetail 
+    p.name as product, 
+    d.orderqty as ordered_qty, 
+    d.stockedqty as stocked_qty, 
+    d.rejectedqty as rejected_qty
+from purchasing.purchaseorderdetail as d 
+left join production.product as p 
+    on p.productid = d.productid 
 order by rejectedqty desc;

@@ -15,7 +15,7 @@ i as (
     from production.productinventory as i
 )
 select 
-    sum(s.qty) / sum(i.qty) as turnover_rate
+    (sum(s.qty) / sum(i.qty)) as turnover_rate
 from s
 full outer join i
     on s.id = i.id;
@@ -39,8 +39,12 @@ i as (
     from production.productinventory as i
 )
 select 
-    s.id as id, s.qty as sale_qty, i.qty as inventory_qty
+    p.name as product, 
+    s.qty as sale_qty, 
+    i.qty as inventory_qty
 from s
 full outer join i
-    on s.id = i.id;
+    on s.id = i.id
+left join production.product as p
+    on p.productid = s.id;
     
