@@ -1,4 +1,4 @@
-create view production.inbound as 
+create view inbound as 
     select 
         productid as id, 
         stockedqty as qty, 
@@ -15,7 +15,7 @@ union all
 
 
 
-create view production.outbound as 
+create view outbound as 
     select 
         b.componentid as id, 
         -- Here we ignore the fact if b.perassembly has duplicate values, because we cant find the real true value
@@ -35,13 +35,13 @@ union all
 
 
 
-create view production.inventory_change as 
+create view inventory_change as 
 with i as (
     select 
         id, 
         sum(qty) as qty, 
         date 
-    from production.inbound 
+    from inbound 
         group by id, date
 ),
 o as (
@@ -49,7 +49,7 @@ o as (
         id, 
         sum(qty) as qty, 
         date 
-    from production.outbound 
+    from outbound 
         group by id, date
 )
 select 

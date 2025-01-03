@@ -22,7 +22,7 @@ full outer join i
 
 
 
-create view turnover as 
+create view turnover_not_final as 
 with s as (
     select 
         d.productid as id, 
@@ -39,12 +39,20 @@ i as (
     from production.productinventory as i
 )
 select 
-    p.name as product, 
-    s.qty as sale_qty, 
-    i.qty as inventory_qty
+    s.id as id, 
+    sum(s.qty) as sale_qty, 
+    sum(i.qty) as inventory_qty
 from s
 full outer join i
     on s.id = i.id
-left join production.product as p
-    on p.productid = s.id;
+    group by s.id;
     
+
+
+create view turnover_final as 
+select 
+    p.name as product, 
+    (t.sale_qty / t.inventory_qty) as turnover_rate
+from turnover_not_final as t
+left join production.product as p
+    on p.productid = t.id;

@@ -25,7 +25,9 @@ select
     p.name as product,
     i.qty as qty,
     p.reorderpoint as qty_limit,
+    (p.reorderpoint - i.qty) as to_reorder,
     (case when (i.qty < p.reorderpoint) then 1 else 0 end) as alert
 from i
 left join production.product as p
-    on i.id = p.productid;
+    on i.id = p.productid
+    where i.qty < p.reorderpoint;
