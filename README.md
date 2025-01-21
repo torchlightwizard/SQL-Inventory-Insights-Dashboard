@@ -3,6 +3,14 @@ A sql data analytics dashboard. Made using Microsoft SQL Server, AdventureWorks2
 
 For aiding in analysis, we convert the tables and columns of the `database` into `yaml` files.
 
+# Dashboard
+
+![Dashboard](assets/Dashboard.PNG)
+
+# Schema
+
+![Schema](assets/Schema.PNG)
+
 # Analysis
 All analysis as sql views can be found in `./queries/views` folder.
 
